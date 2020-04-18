@@ -15,6 +15,7 @@ namespace WickedQuiz.Models
 
         public string Description { get; set; }
 
+        //Navigation Properties
         public virtual ICollection<Quizes> QuizesId { get; set; }
     }
 }

@@ -25,6 +25,8 @@ namespace WickedQuiz.Models
         [DataType(DataType.Date)]
         public DateTime DateRegistered { get; set; } = DateTime.Now;
 
+
+        //Navigation Properties
         public virtual ICollection<Quizes> Quizes{ get; set; }
         public virtual ICollection<ScoreTable> ScoreTables { get; set; }
     }

@@ -16,6 +16,11 @@ namespace WickedQuiz.Models
         [DataType(DataType.Date)]
         public DateTime DateFinished { get; set; }
 
+        //Foreign Keys
+        public string ClientId { get; set; }
+        public Guid? QuizesId { get; set; }
+
+        //Navigation Properties
         public virtual ApplicationUser Client { get; set; }
 
         public Quizes Quizes { get; set; }

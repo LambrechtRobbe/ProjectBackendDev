@@ -16,8 +16,12 @@ namespace WickedQuiz.Models
 
         public string? ImgURL { get; set; }
 
+        //Foreign Keys
+        public Guid? QuizesId { get; set; }
+
+        //Navigation Properties
         public Quizes Quizes { get; set; }
 
-        public virtual ICollection<Answers> Answers { get; set; }
+        public virtual ICollection<Answers> answers { get; set; }
     }
 }

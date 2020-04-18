@@ -60,6 +60,7 @@ namespace WickedQuiz.Web
             app.UseAuthorization();
             WickedQuizDbContextExtensions.SeedRoles(roleMgr).Wait();
             WickedQuizDbContextExtensions.SeedUsers(userMgr).Wait();
+            //WickedQuizDbContextExtensions.SeedQuiz(userMgr).Wait();
 
             app.UseEndpoints(endpoints =>
             {

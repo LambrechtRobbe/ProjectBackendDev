@@ -20,6 +20,12 @@ namespace WickedQuiz.Models
         [Range(0, 2)]
         public Difficulty diff { get; set; }
 
+        //Foreign Keys
+        public Guid? TopicId { get; set; }
+
+        public string ClientId { get; set; }
+
+        //Navigation Properties
         public virtual Topic Topic { get; set; }
 
         public virtual ApplicationUser Client { get; set; }
