@@ -1,0 +1,12 @@
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\bin\Debug\netcoreapp3.1\WickedQuiz.Models.deps.json
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\bin\Debug\netcoreapp3.1\WickedQuiz.Models.dll
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\obj\Debug\netcoreapp3.1\WickedQuiz.Models.csprojAssemblyReference.cache
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\obj\Debug\netcoreapp3.1\WickedQuiz.Models.AssemblyInfoInputs.cache
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\obj\Debug\netcoreapp3.1\WickedQuiz.Models.AssemblyInfo.cs
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\bin\Debug\netcoreapp3.1\WickedQuiz.Models.runtimeconfig.json
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\bin\Debug\netcoreapp3.1\WickedQuiz.Models.runtimeconfig.dev.json
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\obj\Debug\netcoreapp3.1\WickedQuiz.Models.genruntimeconfig.cache
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\obj\Debug\netcoreapp3.1\WickedQuiz.Models.csproj.CoreCompileInputs.cache
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\bin\Debug\netcoreapp3.1\WickedQuiz.Models.pdb
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\obj\Debug\netcoreapp3.1\WickedQuiz.Models.dll
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Models\obj\Debug\netcoreapp3.1\WickedQuiz.Models.pdb
