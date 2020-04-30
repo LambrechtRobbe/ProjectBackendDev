@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using WickedQuiz.Models.Models;
 using WickedQuiz.Models.Data;
 using WickedQuiz.Models.Repositories;
+using Microsoft.AspNetCore.Http;
 
 namespace WickedQuiz.Web
 {
@@ -34,6 +35,7 @@ namespace WickedQuiz.Web
             services.AddScoped<IQuestionRepository, QuestionRepository>();
             services.AddScoped<IAnswerRepository, AnswerRepository>();
             services.AddScoped<IScoreRepository, ScoreRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddDbContext<WickedQuizDbContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.Configure<IdentityOptions>(options => { options.Password.RequiredLength = 8; options.User.RequireUniqueEmail = true; options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30); });
             services.ConfigureApplicationCookie(options => { options.Cookie.HttpOnly = true; options.ExpireTimeSpan = TimeSpan.FromMinutes(30); });

@@ -39,12 +39,14 @@ namespace WickedQuiz.Web.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
         // GET: Quiz
+        [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult> QuizzesAsync()
         {
             var result = await _quizRepository.GetAllQuizzesAsync();
             return View(result);
         }
 
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult> MyQuizzesAsync()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -52,18 +54,25 @@ namespace WickedQuiz.Web.Controllers
             return View(result);
         }
 
+        [Authorize(Roles = "Administrator, User")]
+        public async Task<ActionResult> PlayQuizAsync(string quizid)
+        {
+            Quiz quiz = await _quizRepository.GetQuizForQuizIdAsync(Guid.Parse(quizid));
+            return View(quiz);
+        }
+
         [Authorize(Roles = "Administrator")]
         public ActionResult CreateQuiz() => View();
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> CreateQuizAsync(IFormCollection collection)
         {
             try
             {
-                var username = User.FindFirstValue(ClaimTypes.Name);
-                var user = _userManager.GetUserAsync(username); //nog niet juist
-                Quiz quiz = new Quiz() { Id = Guid.NewGuid(), Name = collection["Name"], Description = collection["Description"], QuestionCount = Int32.Parse(collection["QuestionCount"]), ApplicationUserId=  user.Id.ToString()};
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; //nog niet juist
+                Quiz quiz = new Quiz() { Id = Guid.NewGuid(), Name = collection["Name"], Description = collection["Description"], QuestionCount = Int32.Parse(collection["QuestionCount"]), ApplicationUserId=  userId.ToString()};
                 switch (Int16.Parse(collection["Difficulty"]))
                 {
                     case 0:

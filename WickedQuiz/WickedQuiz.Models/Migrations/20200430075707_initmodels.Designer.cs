@@ -10,7 +10,7 @@ using WickedQuiz.Web.Data;
 namespace WickedQuiz.Models.Migrations
 {
     [DbContext(typeof(WickedQuizDbContext))]
-    [Migration("20200429133753_initmodels")]
+    [Migration("20200430075707_initmodels")]
     partial class initmodels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

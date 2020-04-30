@@ -46,6 +46,20 @@ namespace WickedQuiz.Models.Repositories
             }
         }
 
+        public async Task<Quiz> GetQuizForQuizIdAsync(Guid quizid)
+        {
+            try
+            {
+                var result = await _context.Quizzes.Include(p => p.Questions).ThenInclude(it => it.Answers).SingleOrDefaultAsync<Quiz>(p => p.Id == quizid);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.InnerException.Message);
+                return null;
+            }
+        }
+
         public async Task<Quiz> AddQuizAsync(Quiz quiz)
         {
             try
