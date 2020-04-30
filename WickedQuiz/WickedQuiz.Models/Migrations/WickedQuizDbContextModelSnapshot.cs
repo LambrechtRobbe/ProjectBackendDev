@@ -97,10 +97,12 @@ namespace WickedQuiz.Models.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -137,10 +139,12 @@ namespace WickedQuiz.Models.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -161,15 +165,15 @@ namespace WickedQuiz.Models.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<bool>("Correct")
-                        .HasColumnType("bit");
+                    b.Property<int?>("Correct")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("QuestionID")
+                    b.Property<Guid>("QuestionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("QuestionID");
+                    b.HasIndex("QuestionId");
 
                     b.ToTable("Answers");
                 });
@@ -257,34 +261,11 @@ namespace WickedQuiz.Models.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("WickedQuiz.Models.Models.Category", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(250)")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
-
             modelBuilder.Entity("WickedQuiz.Models.Models.Question", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ImgURL")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("QuestionName")
                         .IsRequired()
@@ -310,30 +291,33 @@ namespace WickedQuiz.Models.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("Difficulty")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int>("diff")
+                    b.Property<int>("QuestionCount")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Quizzes");
                 });
 
-            modelBuilder.Entity("WickedQuiz.Models.Models.ScoreTable", b =>
+            modelBuilder.Entity("WickedQuiz.Models.Models.Score", b =>
                 {
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
@@ -344,14 +328,17 @@ namespace WickedQuiz.Models.Migrations
                     b.Property<DateTime>("DateFinished")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Score")
+                    b.Property<int>("FinalScore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaxScore")
                         .HasColumnType("int");
 
                     b.HasKey("ApplicationUserId", "QuizId");
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("ScoreTables");
+                    b.ToTable("Scores");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -409,7 +396,7 @@ namespace WickedQuiz.Models.Migrations
                 {
                     b.HasOne("WickedQuiz.Models.Models.Question", "Question")
                         .WithMany("Answers")
-                        .HasForeignKey("QuestionID")
+                        .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -428,15 +415,9 @@ namespace WickedQuiz.Models.Migrations
                     b.HasOne("WickedQuiz.Models.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("WickedQuiz.Models.Models.Category", "Category")
-                        .WithMany("Quizzes")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
-            modelBuilder.Entity("WickedQuiz.Models.Models.ScoreTable", b =>
+            modelBuilder.Entity("WickedQuiz.Models.Models.Score", b =>
                 {
                     b.HasOne("WickedQuiz.Models.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()

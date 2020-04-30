@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading.Tasks;
 using WickedQuiz.Models.Models;
 using WickedQuiz.Web.Data;
@@ -24,21 +22,7 @@ namespace WickedQuiz.Models.Repositories
         {
             try
             {
-                var result = await _context.Quizzes.Include(q => q.Questions).ThenInclude(q => q.Answers).ToListAsync<Quiz>(); ;
-                return result;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.InnerException.Message);
-                return null;
-            }
-        }
-
-        public async Task<Quiz> GetQuizForNameAsync(string quizname)
-        {
-            try
-            {
-                var result = _context.Quizzes.Where(n => n.Name == quizname).Single();
+                var result = await _context.Quizzes.Include(q => q.Questions).ThenInclude(q => q.Answers).ToListAsync<Quiz>();
                 return result;
             }
             catch (Exception ex)
@@ -52,7 +36,7 @@ namespace WickedQuiz.Models.Repositories
         {
             try
             {
-                var result = _context.Quizzes.Where(n => n.ApplicationUserId == applicationuserid);
+                var result = await _context.Quizzes.Where(n => n.ApplicationUserId == applicationuserid).ToListAsync<Quiz>();
                 return result;
             }
             catch (Exception ex)

@@ -14,34 +14,34 @@ namespace AspNetCore
     using Microsoft.AspNetCore.Mvc.ViewFeatures;
 #nullable restore
 #line 1 "D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\Areas\Identity\Pages\_ViewImports.cshtml"
-using Microsoft.AspNetCore.Identity;
+using WickedQuiz.Models.Models;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 2 "D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\Areas\Identity\Pages\_ViewImports.cshtml"
-using WickedQuiz.Web.Areas.Identity;
+using Microsoft.AspNetCore.Identity;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
 #line 3 "D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\Areas\Identity\Pages\_ViewImports.cshtml"
-using WickedQuiz.Web.Areas.Identity.Pages;
+using WickedQuiz.Web.Areas.Identity;
 
 #line default
 #line hidden
 #nullable disable
 #nullable restore
-#line 5 "D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\Areas\Identity\Pages\_ViewImports.cshtml"
-using WickedQuiz.Models.Models;
+#line 4 "D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\Areas\Identity\Pages\_ViewImports.cshtml"
+using WickedQuiz.Web.Areas.Identity.Pages;
 
 #line default
 #line hidden
 #nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"cc701c74526a50864c63e5c7b74df3b62d9eb0fc", @"/Areas/Identity/Pages/_ValidationScriptsPartial.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"dc4833babd1c9d03aa556ec4a743021866853784", @"/Areas/Identity/Pages/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"32356caa648bd4f204f3c4a64505470b6339f416", @"/Areas/Identity/Pages/_ViewImports.cshtml")]
     public class Areas_Identity_Pages__ValidationScriptsPartial : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<dynamic>
     {
         private static readonly global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute __tagHelperAttribute_0 = new global::Microsoft.AspNetCore.Razor.TagHelpers.TagHelperAttribute("src", new global::Microsoft.AspNetCore.Html.HtmlString("~/Identity/lib/jquery-validation/dist/jquery.validate.js"), global::Microsoft.AspNetCore.Razor.TagHelpers.HtmlAttributeValueStyle.DoubleQuotes);

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace WickedQuiz.Models.Models
 {
-    public class ApplicationUser: IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         [StringLength(50, ErrorMessage = "First name is limited to 50 characters in length.")]
         public string FirstName { get; set; }

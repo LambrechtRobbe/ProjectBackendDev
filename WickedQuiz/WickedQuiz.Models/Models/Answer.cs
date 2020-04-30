@@ -11,16 +11,20 @@ namespace WickedQuiz.Models.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        [StringLength(50, MinimumLength = 5, ErrorMessage = "Question name is limited to 50 characters in length.")]
+        [StringLength(50, MinimumLength = 5, ErrorMessage = "Answer name is limited to 50 characters in length.")]
         public string AnswerName { get; set; }
 
-        [Required]
-        [Range(0, 1)]
-        public bool Correct { get; set; }
+        public State? Correct { get; set; }
 
-        public Guid QuestionID { get; set; }
+        public Guid QuestionId { get; set; }
 
         //Navigation Properties
         public virtual Question Question { get; set; }
+
+        public enum State
+        {
+            incorrect = 0,
+            correct = 1
+        }
     }
 }

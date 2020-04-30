@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace WickedQuiz.Models.Repositories
         {
             try
             {
-                var result = _context.Answers.Where(n => n.QuestionID == Guid.Parse(questionId));
+                var result = await _context.Answers.Where(n => n.QuestionId == Guid.Parse(questionId)).ToListAsync<Answer>();
                 return result;
             }
             catch (Exception ex)
@@ -36,7 +37,7 @@ namespace WickedQuiz.Models.Repositories
         {
             try
             {
-                var result = _context.Answers.AddAsync(answer);
+                await _context.Answers.AddAsync(answer);
                 await _context.SaveChangesAsync();
                 return answer;
             }

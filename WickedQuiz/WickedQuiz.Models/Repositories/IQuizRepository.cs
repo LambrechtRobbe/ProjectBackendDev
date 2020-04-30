@@ -8,7 +8,6 @@ namespace WickedQuiz.Models.Repositories
     {
         Task<Quiz> AddQuizAsync(Quiz quiz);
         Task<IEnumerable<Quiz>> GetAllQuizzesAsync();
-        Task<Quiz> GetQuizForNameAsync(string quizname);
-        Task<IEnumerable<Quiz>> GetQuizzesForUserAsync(string applicationuser);
+        Task<IEnumerable<Quiz>> GetQuizzesForUserAsync(string applicationuserid);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace WickedQuiz.Models.Repositories
         {
             try
             {
-                var result = _context.Questions.Where(n => n.QuizId == Guid.Parse(quizid));
+                var result = await _context.Questions.Where(n => n.QuizId == Guid.Parse(quizid)).ToListAsync<Question>();
                 return result;
             }
             catch (Exception ex)
