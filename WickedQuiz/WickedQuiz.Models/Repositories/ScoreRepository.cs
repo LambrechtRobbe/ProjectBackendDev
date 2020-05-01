@@ -19,7 +19,7 @@ namespace WickedQuiz.Models.Repositories
             this._context = wickedQuizDbContext;
         }
 
-        public async Task<IEnumerable<Score>> GetAllScoresForQuizzesAsync(Guid quizid)
+        public async Task<IList<Score>> GetAllScoresForQuizzesAsync(Guid quizid)
         {
             try
             {

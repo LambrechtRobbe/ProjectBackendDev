@@ -1,0 +1,32 @@
+﻿@model IList<WickedQuiz.Models.Models.Score>
+@{
+    ViewData["Title"] = "ScoresQuiz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ScoresQuiz</h1>
+@if (!Model.Any())
+{
+    <div>
+        <p>Er zijn nog geen quizzes aangemaakt.</p>
+        <p>De eerste quiz moet nog worden aangemaakt.</p>
+        @Html.ActionLink("Play quiz", "StartQuiz", new { quizid = ViewBag.quizid })
+    </div>
+}
+else
+{
+    @for (var i = 0; i < Model.Count(); i++)
+    {
+        <div class="form-group">
+            <label class="control-label">@Model[i].Quiz.Name</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Model[i].FinalScore</label>
+            <label class="control-label">@Model[i].MaxScore</label>
+        </div>
+        <div class="form-group">
+            <label class="control-label">@Model[i].ApplicationUser.UserName</label>
+        </div>
+    }
+}
+

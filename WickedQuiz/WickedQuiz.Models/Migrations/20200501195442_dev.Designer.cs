@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WickedQuiz.Web.Data;
 
 namespace WickedQuiz.Models.Migrations
 {
     [DbContext(typeof(WickedQuizDbContext))]
-    partial class WickedQuizDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200501195442_dev")]
+    partial class dev
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

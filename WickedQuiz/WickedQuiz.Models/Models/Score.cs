@@ -7,6 +7,8 @@ namespace WickedQuiz.Models.Models
 {
     public class Score
     {
+        [Key]
+        public Guid Id { get; set; } = Guid.NewGuid();
         [Required]
         public int FinalScore { get; set; }
         public int MaxScore { get; set; }

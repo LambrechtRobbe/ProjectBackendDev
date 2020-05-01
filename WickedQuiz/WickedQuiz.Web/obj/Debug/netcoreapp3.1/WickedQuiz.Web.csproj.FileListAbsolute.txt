@@ -337,3 +337,7 @@ D:\Visual Studio Projects\WickedQuiz\WickedQuiz.Web\obj\Debug\netcoreapp3.1\Wick
 D:\Visual Studio Projects\WickedQuiz\WickedQuiz.Web\obj\Debug\netcoreapp3.1\Razor\Views\Quiz\StartQuiz.cshtml.g.cs
 D:\Visual Studio Projects\WickedQuiz\WickedQuiz.Web\obj\Debug\netcoreapp3.1\Razor\Views\Quiz\PlayQuiz.cshtml.g.cs
 D:\Visual Studio Projects\WickedQuiz\WickedQuiz.Web\obj\Debug\netcoreapp3.1\Razor\Views\Quiz\ResultQuiz.cshtml.g.cs
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\obj\Debug\netcoreapp3.1\Razor\Views\Quiz\PlayQuiz.cshtml.g.cs
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\obj\Debug\netcoreapp3.1\Razor\Views\Quiz\ResultQuiz.cshtml.g.cs
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\obj\Debug\netcoreapp3.1\Razor\Views\Quiz\StartQuiz.cshtml.g.cs
+D:\GithubRepos\ProjectBackendDev\WickedQuiz\WickedQuiz.Web\obj\Debug\netcoreapp3.1\Razor\Views\Quiz\ScoresQuiz.cshtml.g.cs

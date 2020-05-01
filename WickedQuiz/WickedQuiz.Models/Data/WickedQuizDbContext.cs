@@ -23,7 +23,7 @@ namespace WickedQuiz.Web.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); //must voor identity 
-            modelBuilder.Entity<Score>().HasKey(s => new { s.ApplicationUserId, s.QuizId });
+            //modelBuilder.Entity<Score>().HasKey(s => new { s.ApplicationUserId, s.QuizId });
         }
     }
 }

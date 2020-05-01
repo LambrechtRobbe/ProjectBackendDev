@@ -55,6 +55,18 @@ namespace WickedQuiz.Web.Controllers
             return View(result);
         }
 
+        public async Task<ActionResult> ScoresQuizAsync(string quizid)
+        {
+            var result = await _scoreRepository.GetAllScoresForQuizzesAsync(Guid.Parse(quizid));
+            ViewBag.quizid = quizid;
+            return View(result);
+        }
+
+        public ActionResult ResultQuiz()
+        {
+            return View();
+        }
+
         //[Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult> StartQuizAsync(string quizid)
         {
@@ -64,66 +76,63 @@ namespace WickedQuiz.Web.Controllers
 
         public async Task<ActionResult> PlayQuizAsync(string quizid)
         {
-            Quiz quiz = await _quizRepository.GetQuizForQuizIdAsync(Guid.Parse(quizid));
-            ScoreUser_VM scoreUser_VM = new ScoreUser_VM() { QName = quiz.Name, QId = quiz.Id };
+            try
+            {
+                Quiz quiz = await _quizRepository.GetQuizForQuizIdAsync(Guid.Parse(quizid));
+                ScoreUser_VM scoreUser_VM = new ScoreUser_VM() { QName = quiz.Name, QId = quiz.Id };
 
-            var qstnList = await _questionRepository.GetQuestionsForQuizAsync(scoreUser_VM.QId);
-            var qstnSelf = qstnList.ToList()[scoreUser_VM.QIndex];
+                var qstnList = await _questionRepository.GetQuestionsForQuizAsync(scoreUser_VM.QId);
+                var qstnSelf = qstnList.ToList()[scoreUser_VM.QIndex];
 
-            var ansListIe = await _answerRepository.GetAnswersForQuestionAsync(qstnSelf.Id.ToString());
-            var ansList = ansListIe.ToList();
+                var ansListIe = await _answerRepository.GetAnswersForQuestionAsync(qstnSelf.Id.ToString());
+                var ansList = ansListIe.ToList();
 
-            scoreUser_VM.Question = qstnSelf;
-            scoreUser_VM.Answers = ansList;
-
-            ViewBag.Score = 0;
-
-            return View("PlayQuiz", scoreUser_VM);
-        }
-
-        public ActionResult ResultQuiz()
-        {
-            return View();
+                scoreUser_VM.Question = qstnSelf;
+                scoreUser_VM.Answers = ansList;
+                ViewBag.Score = 0;
+                return View("PlayQuiz", scoreUser_VM);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.InnerException.Message);
+                return View();
+            }
         }
 
         public async Task<ActionResult> NextQuestion(Guid QId, string QName, int QIndex, string Correct, int Score)
         {
-
-            if (Correct == "correct")
+            try
             {
-                Score++;
-            }
-
-            ScoreUser_VM score1 = new ScoreUser_VM() { QName = QName, QId = QId, QIndex = QIndex };
-
-            var qstnList = await _questionRepository.GetQuestionsForQuizAsync(score1.QId);
-            score1.QIndex += 1;
-
-            if (score1.QIndex >= qstnList.Count())
-            {
-
-                // add score to database
-                Score newscore = new Score()
+                ScoreUser_VM score1 = new ScoreUser_VM() { QName = QName, QId = QId, QIndex = QIndex };
+                var qstnList = await _questionRepository.GetQuestionsForQuizAsync(score1.QId);
+                score1.QIndex++;
+                if (Correct == "correct"){ Score += 1; }
+                if (score1.QIndex >= qstnList.Count())
                 {
-                    ApplicationUserId = _userManager.GetUserId(User),
-                    QuizId = score1.QId,
-                    MaxScore = qstnList.Count(),
-                    FinalScore = Score
-                };
-                await _scoreRepository.AddScoreAsync(newscore);
-
-                return View("ResultQuiz", newscore);
+                    Score newscore = new Score()
+                    {
+                        ApplicationUserId = _userManager.GetUserId(User),
+                        QuizId = score1.QId,
+                        MaxScore = qstnList.Count(),
+                        FinalScore = Score
+                    };
+                    await _scoreRepository.AddScoreAsync(newscore);
+                    return View("ResultQuiz", newscore);
+                }
+                else
+                {
+                    var objquestion = qstnList[score1.QIndex];
+                    IList<Answer> answers = await _answerRepository.GetAnswersForQuestionAsync(objquestion.Id.ToString());
+                    score1.Question = objquestion;
+                    score1.Answers = answers;
+                    ViewBag.score = Score;
+                    return View("PlayQuiz", score1);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var objquestion = qstnList[score1.QIndex];
-                IList<Answer> answers = await _answerRepository.GetAnswersForQuestionAsync(objquestion.Id.ToString());
-
-                score1.Question = objquestion;
-                score1.Answers = answers;
-
-                ViewBag.score = Score;
-                return View("PlayQuiz", score1);
+                Debug.WriteLine(ex.InnerException.Message);
+                return View();
             }
         }
 
@@ -150,7 +159,6 @@ namespace WickedQuiz.Web.Controllers
                         answers.Add(answer);
                     }
                     Question question1 = new Question() { Answers = answers, Quiz = quizze };
-
                     questions.Add(question1);
                 }
                 ViewBag.QuizId = quizze.Id;
