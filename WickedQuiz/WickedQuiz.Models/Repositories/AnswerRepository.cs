@@ -19,7 +19,7 @@ namespace WickedQuiz.Models.Repositories
             this._context = context;
         }
 
-        public async Task<IEnumerable<Answer>> GetAnswersForQuestionAsync(string questionId)
+        public async Task<IList<Answer>> GetAnswersForQuestionAsync(string questionId)
         {
             try
             {

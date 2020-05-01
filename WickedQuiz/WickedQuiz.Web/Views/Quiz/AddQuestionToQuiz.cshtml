@@ -1,41 +1,44 @@
-﻿@model ICollection<WickedQuiz.Models.Models.Question>
+﻿@model IList<WickedQuiz.Models.Models.Question>
 @{
     ViewData["Title"] = "AddQuestionToQuiz";
-    Layout = "~/Views/Shared/_Layout.cshtml";
     var counter = 0;
 }
 
 <h1>AddQuestionToQuiz</h1>
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <form asp-action="AddQuestionToQuiz" enctype="multipart/form-data">
-    @foreach (var item in Model)
+    @for (var i = 0; i < Model.Count; i++)
     {
-        <input type="type" asp-for="@item.Quiz" name="quizid" value="@ViewBag.QuizId" hidden/>
+        <input asp-for="@Model[i].QuizId" value="@ViewBag.QuizId" style="display:none;" hidden />
+        <input asp-for="@Model[i].Id" value="@Model[i].Id" style="display:none;" hidden />
         <div class="form-group">
             <h2>Question</h2>
             <div class="form-group">
-                <label asp-for="@item.QuestionName">Question name</label>
-                <input asp-for="@item.QuestionName" type="text" class="form-control" placeholder="Enter question name" required>
-                <span asp-validation-for="@item.QuestionName" class="text-danger"></span>
+                <label asp-for="@Model[i].QuestionName">Question name</label>
+                <input asp-for="@Model[i].QuestionName" type="text" class="form-control" placeholder="Enter question name" required>
+                <span asp-validation-for="@Model[i].QuestionName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@item.QuestionName" class="control-label"></label>
-                <input name="questionimg" type="file" value="@(item.QuestionName + ".jpg")" data-guid="@item.Id" id="questionimgid" class="form-control questionImage" />
-                <input name="listimgindex" id="@item.Id" type="text" style="display:none" value="0" />
-                <span asp-validation-for="@item.QuestionName" class="text-danger"></span>
+                <label asp-for="@Model[i].QuestionName" class="control-label"></label>
+                <input name="questionimg" type="file" value="@(Model[i].QuestionName + ".jpg")" data-guid="@Model[i].Id" class="form-control questionImage" />
+                <input name="listimgindex" id="@Model[i].Id" type="text" style="display:none" value="0" />
+                <span asp-validation-for="@Model[i].QuestionName" class="text-danger"></span>
             </div>
+            <hr />
+            <h3>Answers:</h3>
 
             @{
-                @foreach (var answer in item.Answers)
+                @for (var ianswer = 0; ianswer < @Model[i].Answers.Count; ianswer++)
                 {
                     <div>
-                        <label asp-for="@answer.AnswerName">Answers</label>
-                        <input asp-for="@answer.AnswerName" type="text" class="form-control" placeholder="Enter answer" required>
-                        <span asp-validation-for="@answer.AnswerName" class="text-danger"></span>
-                        <select asp-for="@answer.Correct" asp-items="Html.GetEnumSelectList<Answer.State>()">
-                            <option>-- Is this answer correct? --</option>
+                        <input asp-for="@Model[i].Answers[ianswer].Id" value="@Guid.NewGuid()" style="display:none;" hidden />
+                        <input asp-for="@Model[i].Answers[ianswer].QuestionId" value="@Model[i].Id" style="display:none;" hidden />
+                        <input asp-for="@Model[i].Answers[ianswer].AnswerName" type="text" class="form-control" placeholder="Enter answer" required>
+                        <span asp-validation-for="@Model[i].Answers[ianswer].AnswerName" class="text-danger"></span>
+                        <select asp-for="@Model[i].Answers[ianswer].Correct" asp-items="Html.GetEnumSelectList<Answer.State>()">
+                            <option value="" disabled selected hidden>-- Is this answer correct? --</option>
                         </select>
-                        <span asp-validation-for="@answer.Correct" class="text-danger"></span>
+                        <span asp-validation-for="@Model[i].Answers[ianswer].Correct" class="text-danger"></span>
                     </div>
                     if (counter == 1)
                     {
@@ -63,35 +66,26 @@
     
     const imageChosen = function () {
         if (this.files.length == 0) {
-            console.log("no file selected");
             var inputId = document.getElementById(this.getAttribute("data-guid"));
-            console.log("dit is degene");
-            console.log(inputId);
             inputId.value = 0;
         }
         else {
-            console.log("file selected");
-            console.log("no file selected");
             var inputId = document.getElementById(this.getAttribute("data-guid"));
-            console.log("dit is degene");
-            console.log(inputId);
             inputId.value = 1;
         }
     }
 
-
     const init = function () {
-
-        try {
-            var images = document.querySelectorAll('.questionImage');
-            for (let image of images) {
-                image.addEventListener('change', imageChosen);
+        try
+        {
+            var inputimages = document.querySelectorAll('.questionImage');
+            for (let inputimage of inputimages) {
+                inputimage.addEventListener('change', imageChosen);
             };
-        } catch (e) {
-
         }
-
+        catch (e)
+        {
+        }
     }
     document.addEventListener("DOMContentLoaded", init)
-
 </script>

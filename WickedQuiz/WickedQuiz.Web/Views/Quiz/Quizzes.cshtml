@@ -43,7 +43,7 @@ else
                         @Html.DisplayFor(modelItem => item.Difficulty)
                     </td>
                     <td>
-                        @Html.ActionLink("Play", "Play", new { id = item.Id }) |
+                        @Html.ActionLink("Play", "StartQuizAsync", new { id = item.Id }) |
                         @Html.ActionLink("Score tabel", "IndexScoresForQuiz", new { id = item.Id })
                     </td>
                 </tr>

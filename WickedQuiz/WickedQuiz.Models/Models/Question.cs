@@ -27,6 +27,6 @@ namespace WickedQuiz.Models.Models
         //Navigation Properties
         public virtual Quiz Quiz { get; set; }
 
-        public virtual ICollection<Answer> Answers { get; set; }
+        public virtual IList<Answer> Answers { get; set; }
     }
 }

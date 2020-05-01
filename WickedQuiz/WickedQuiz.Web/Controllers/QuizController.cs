@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
 using WickedQuiz.Models.Models;
 using WickedQuiz.Models.Repositories;
+using WickedQuiz.Models.ViewModels;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
 namespace WickedQuiz.Web.Controllers
@@ -54,11 +55,76 @@ namespace WickedQuiz.Web.Controllers
             return View(result);
         }
 
-        [Authorize(Roles = "Administrator, User")]
+        //[Authorize(Roles = "Administrator, User")]
+        public async Task<ActionResult> StartQuizAsync(string quizid)
+        {
+            var result = await _quizRepository.GetQuizForQuizIdAsync(Guid.Parse(quizid));
+            return View(result);
+        }
+
         public async Task<ActionResult> PlayQuizAsync(string quizid)
         {
             Quiz quiz = await _quizRepository.GetQuizForQuizIdAsync(Guid.Parse(quizid));
-            return View(quiz);
+            ScoreUser_VM scoreUser_VM = new ScoreUser_VM() { QName = quiz.Name, QId = quiz.Id };
+
+            var qstnList = await _questionRepository.GetQuestionsForQuizAsync(scoreUser_VM.QId);
+            var qstnSelf = qstnList.ToList()[scoreUser_VM.QIndex];
+
+            var ansListIe = await _answerRepository.GetAnswersForQuestionAsync(qstnSelf.Id.ToString());
+            var ansList = ansListIe.ToList();
+
+            scoreUser_VM.Question = qstnSelf;
+            scoreUser_VM.Answers = ansList;
+
+            ViewBag.Score = 0;
+
+            return View("PlayQuiz", scoreUser_VM);
+        }
+
+        public ActionResult ResultQuiz()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> NextQuestion(Guid QId, string QName, int QIndex, string Correct, int Score)
+        {
+
+            if (Correct == "correct")
+            {
+                Score++;
+            }
+
+            ScoreUser_VM score1 = new ScoreUser_VM() { QName = QName, QId = QId, QIndex = QIndex };
+
+            var qstnList = await _questionRepository.GetQuestionsForQuizAsync(score1.QId);
+            score1.QIndex += 1;
+
+            if (score1.QIndex >= qstnList.Count())
+            {
+
+                // add score to database
+                Score newscore = new Score()
+                {
+                    ApplicationUserId = _userManager.GetUserId(User),
+                    QuizId = score1.QId,
+                    MaxScore = qstnList.Count(),
+                    FinalScore = Score
+                };
+                await _scoreRepository.AddScoreAsync(newscore);
+
+                return View("ResultQuiz", newscore);
+            }
+            else
+            {
+                var objquestion = qstnList[score1.QIndex];
+                IList<Answer> answers = await _answerRepository.GetAnswersForQuestionAsync(objquestion.Id.ToString());
+
+                score1.Question = objquestion;
+                score1.Answers = answers;
+
+                ViewBag.score = Score;
+                return View("PlayQuiz", score1);
+            }
         }
 
         [Authorize(Roles = "Administrator")]
@@ -67,46 +133,32 @@ namespace WickedQuiz.Web.Controllers
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateQuizAsync(IFormCollection collection)
+        public async Task<ActionResult> CreateQuizAsync(Quiz quizze)
         {
             try
             {
-                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value; //nog niet juist
-                Quiz quiz = new Quiz() { Id = Guid.NewGuid(), Name = collection["Name"], Description = collection["Description"], QuestionCount = Int32.Parse(collection["QuestionCount"]), ApplicationUserId=  userId.ToString()};
-                switch (Int16.Parse(collection["Difficulty"]))
-                {
-                    case 0:
-                        quiz.Difficulty = Quiz.Difficulties.easy;
-                        break;
-                    case 1:
-                        quiz.Difficulty = Quiz.Difficulties.medium;
-                        break;
-                    case 2:
-                        quiz.Difficulty = Quiz.Difficulties.hard;
-                        break;
-                    default:
-                        break;
-                }
-                await _quizRepository.AddQuizAsync(quiz);
-                ICollection<Question> questions = new List<Question>();
-                for (var i = 0; i < quiz.QuestionCount; i++)
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                quizze.ApplicationUserId = userId.ToString();
+                await _quizRepository.AddQuizAsync(quizze);
+                IList<Question> questions = new List<Question>();
+                for (var i = 0; i < quizze.QuestionCount; i++)
                 {
                     List<Answer> answers = new List<Answer>();
-
                     for (var j = 0; j < 4; j++)
                     {
-                        Answer answer = new Answer() { Id = Guid.NewGuid() };
+                        Answer answer = new Answer() {};
                         answers.Add(answer);
                     }
-                    Question question1 = new Question() { Id = Guid.NewGuid(), Answers = answers, Quiz = quiz };
+                    Question question1 = new Question() { Answers = answers, Quiz = quizze };
 
                     questions.Add(question1);
                 }
-                ViewBag.QuizId = quiz.Id;
+                ViewBag.QuizId = quizze.Id;
                 return View("AddQuestionToQuiz", questions);
             }
-            catch //(Exception ex)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.InnerException.Message);
                 return View();
             }
         }
@@ -114,35 +166,18 @@ namespace WickedQuiz.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public async Task<ActionResult> AddQuestionToQuiz(IFormCollection collection, List<IFormFile> questionimg, List<string> listimgindex)
+        public async Task<ActionResult> AddQuestionToQuiz(IList<Question> questions, List<IFormFile> questionimg, List<string> listimgindex)
         {
             try
             {
                 var uploadPath = Path.Combine(_he.WebRootPath, "images");
                 int imgCounter = 0;
-                int questioncount = collection["item.QuestionName"].Count();
-                // TODO: Add insert logic here
-                for (var i = 0; i < questioncount; i++)
+                int isaindex = 0;
+                foreach (var question in questions)
                 {
-                    List<Answer> answers = new List<Answer>();
-                    for (var j = 0; j < 4; j++)
-                    {
-                        //var name = collection["item.QuestionName"][i];
-                        int index = j + (i * 4);
-                        if (Int32.Parse(collection["answer.Correct"][index]) == 1)
-                        {
-                            Answer newanswer = new Answer() { Id = Guid.NewGuid(), AnswerName = collection["answer.AnswerName"][index], Correct = Answer.State.correct };
-                            answers.Add(newanswer);
-                        }
-                        else
-                        {
-                            Answer newanswer = new Answer() { Id = Guid.NewGuid(), AnswerName = collection["answer.AnswerName"][index], Correct = Answer.State.incorrect };
-                            answers.Add(newanswer);
-                        }
-                    }
-                    var value = collection["quizid"][0];
-                    Guid QuestionGuid = Guid.NewGuid();
-                    if (Int16.Parse(listimgindex[i]) == 1)
+                    await _questionRepository.AddQuestionAsync(question);
+                    Guid QuestionGuid = question.Id;
+                    if (Int16.Parse(listimgindex[isaindex]) == 1)
                     {
                         if (questionimg[imgCounter].Length > 0)
                         {
@@ -154,9 +189,7 @@ namespace WickedQuiz.Web.Controllers
                         }
                         imgCounter++;
                     }
-
-                    Question newquestion = new Question() { Id = QuestionGuid, QuestionName = collection["item.QuestionName"][i], Answers = answers, QuizId = Guid.Parse(value) };
-                    await _questionRepository.AddQuestionAsync(newquestion);
+                    isaindex++;
                 }
                 var quizzes = await _quizRepository.GetAllQuizzesAsync();
                 return View("MyQuizzes", quizzes);
@@ -165,29 +198,6 @@ namespace WickedQuiz.Web.Controllers
             {
                 Debug.WriteLine(ex.InnerException.Message);
                 return View("MyQuizzes");
-            }
-        }
-
-        // GET: Quiz/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Quiz/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
     }

@@ -8627,11 +8627,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GithubRepos\\ProjectBackendDev\\WickedQuiz\\WickedQuiz.Web\\WickedQuiz.Web.csproj",
+      "projectUniqueName": "D:\\Visual Studio Projects\\WickedQuiz\\WickedQuiz.Web\\WickedQuiz.Web.csproj",
       "projectName": "WickedQuiz.Web",
-      "projectPath": "D:\\GithubRepos\\ProjectBackendDev\\WickedQuiz\\WickedQuiz.Web\\WickedQuiz.Web.csproj",
+      "projectPath": "D:\\Visual Studio Projects\\WickedQuiz\\WickedQuiz.Web\\WickedQuiz.Web.csproj",
       "packagesPath": "C:\\Users\\robbe\\.nuget\\packages\\",
-      "outputPath": "D:\\GithubRepos\\ProjectBackendDev\\WickedQuiz\\WickedQuiz.Web\\obj\\",
+      "outputPath": "D:\\Visual Studio Projects\\WickedQuiz\\WickedQuiz.Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -8651,8 +8651,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "D:\\GithubRepos\\ProjectBackendDev\\WickedQuiz\\WickedQuiz.Models\\WickedQuiz.Models.csproj": {
-              "projectPath": "D:\\GithubRepos\\ProjectBackendDev\\WickedQuiz\\WickedQuiz.Models\\WickedQuiz.Models.csproj"
+            "D:\\Visual Studio Projects\\WickedQuiz\\WickedQuiz.Models\\WickedQuiz.Models.csproj": {
+              "projectPath": "D:\\Visual Studio Projects\\WickedQuiz\\WickedQuiz.Models\\WickedQuiz.Models.csproj"
             }
           }
         }

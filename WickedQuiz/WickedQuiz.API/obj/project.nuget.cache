@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Y2HvUNmKHm+RbPtWxBYdxvFxZyu02smWS7JjB+NuDTKz0gstNxszTt1ZoovRgMy0d8TpY7cG2BZJXXrTYF4Q+g==",
+  "dgSpecHash": "bAZKm0833m4b48lKvFi81zgjaQHXUYjyQTwH2Wo4cJD3MTFxvYHvCJuZ5/eeJBmO88btnxdCKg8IOcAOFKP08A==",
   "success": true,
-  "projectFilePath": "D:\\GithubRepos\\ProjectBackendDev\\WickedQuiz\\WickedQuiz.API\\WickedQuiz.API.csproj",
+  "projectFilePath": "D:\\Visual Studio Projects\\WickedQuiz\\WickedQuiz.API\\WickedQuiz.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\robbe\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\3.1.3\\microsoft.aspnetcore.cryptography.internal.3.1.3.nupkg.sha512",
     "C:\\Users\\robbe\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\3.1.3\\microsoft.aspnetcore.cryptography.keyderivation.3.1.3.nupkg.sha512",

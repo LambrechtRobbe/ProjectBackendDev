@@ -7,6 +7,6 @@ namespace WickedQuiz.Models.Repositories
     public interface IAnswerRepository
     {
         Task<Answer> AddAnswerAsync(Answer answer);
-        Task<IEnumerable<Answer>> GetAnswersForQuestionAsync(string questionId);
+        Task<IList<Answer>> GetAnswersForQuestionAsync(string questionId);
     }
 }

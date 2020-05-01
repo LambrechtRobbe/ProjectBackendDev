@@ -14,7 +14,7 @@ namespace WickedQuiz.Models.Models
         [StringLength(50, MinimumLength = 5, ErrorMessage = "Answer name is limited to 50 characters in length.")]
         public string AnswerName { get; set; }
 
-        public State? Correct { get; set; }
+        public State Correct { get; set; }
 
         public Guid QuestionId { get; set; }
 

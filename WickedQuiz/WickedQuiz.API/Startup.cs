@@ -59,6 +59,11 @@ namespace WickedQuiz.API
             {
                 endpoints.MapControllers();
             });
+            app.UseSwagger(); //enable swagger 
+            app.UseSwaggerUI(c => {
+                c.RoutePrefix = "swagger"; //path naar de UI pagina: /swagger/index.html    
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Quiz_API v1.0");
+            });
         }
     }
 }

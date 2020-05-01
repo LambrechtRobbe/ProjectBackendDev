@@ -3,8 +3,11 @@
     ViewData["Title"] = "MyQuizzes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<partial >
 <h1>MyQuizzes</h1>
+<div>
+    <a href="/Quiz/CreateQuiz">Add new quiz</a>
+</div>
 @if (!Model.Any())
 {
     <div>
@@ -44,7 +47,7 @@ else
                         @Html.DisplayFor(modelItem => item.Difficulty)
                     </td>
                     <td>
-                        @Html.ActionLink("Play", "Play", new { id = item.Id }) |
+                        @Html.ActionLink("Play", "StartQuiz", new { quizid = item.Id }) |
                         @Html.ActionLink("Score tabel", "IndexScoresForQuiz", new { id = item.Id })
                     </td>
                 </tr>

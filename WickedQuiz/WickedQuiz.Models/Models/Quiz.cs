@@ -32,8 +32,8 @@ namespace WickedQuiz.Models.Models
 
         //Navigation Properties
         public virtual ApplicationUser ApplicationUser { get; set; }
-        public virtual ICollection<Question> Questions { get; set; }
-        public virtual ICollection<Score> ScoreTables { get; set; }
+        public virtual IList<Question> Questions { get; set; }
+        public virtual IList<Score> ScoreTables { get; set; }
 
         public enum Difficulties
         {

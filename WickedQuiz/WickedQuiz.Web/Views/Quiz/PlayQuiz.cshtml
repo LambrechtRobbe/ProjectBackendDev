@@ -1,0 +1,53 @@
+﻿@model WickedQuiz.Models.ViewModels.ScoreUser_VM
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PlayQuiz</title>
+</head>
+<body>
+
+<div>
+    <h4>ScoreUser_VM</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.QId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.QId)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.QName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.QName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.questioncount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.questioncount)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.QIndex)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.QIndex)
+        </dd>
+    </dl>
+</div>
+<div>
+    @for (int i = 0; i < Model.Answers.Count(); i++)
+    {
+        @Html.ActionLink(Model.Answers[i].AnswerName, "NextQuestion", new { QId = Model.QId, QName = Model.QName, QIndex = Model.QIndex, Correct = Model.Answers[i].Correct, Score = ViewBag.Score })
+    }
+</div>
+</body>
+</html>
