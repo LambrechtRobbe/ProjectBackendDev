@@ -12,11 +12,16 @@ namespace WickedQuiz.API.ApiModels
         [Display(Name = "QuizName")]
         public string Name { get; set; }
 
+        [Display(Name = "Description")]
         [StringLength(250, MinimumLength = 2, ErrorMessage = "Only 250 characters allowed.")]
         public string Description { get; set; }
 
+        [Display(Name = "Difficulty")]
         [Required(ErrorMessage = "Difficulty required")]
         public string Difficulty { get; set; }
+
+        [Display(Name = "CreatorName")]
+        public string CreatorName { get; set; }
 
         public List<string> Questions { get; set; } = new List<string>();
     }

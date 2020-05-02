@@ -55,6 +55,7 @@ namespace WickedQuiz.Web.Controllers
             return View(result);
         }
 
+        [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult> ScoresQuizAsync(string quizid)
         {
             var result = await _scoreRepository.GetAllScoresForQuizzesAsync(Guid.Parse(quizid));
@@ -62,18 +63,20 @@ namespace WickedQuiz.Web.Controllers
             return View(result);
         }
 
+        [Authorize(Roles = "Administrator, User")]
         public ActionResult ResultQuiz()
         {
             return View();
         }
 
-        //[Authorize(Roles = "Administrator, User")]
+        [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult> StartQuizAsync(string quizid)
         {
             var result = await _quizRepository.GetQuizForQuizIdAsync(Guid.Parse(quizid));
             return View(result);
         }
 
+        [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult> PlayQuizAsync(string quizid)
         {
             try
@@ -99,6 +102,7 @@ namespace WickedQuiz.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult> NextQuestion(Guid QId, string QName, int QIndex, string Correct, int Score)
         {
             try
@@ -171,6 +175,7 @@ namespace WickedQuiz.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]

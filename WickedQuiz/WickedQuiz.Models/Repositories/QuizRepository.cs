@@ -22,7 +22,7 @@ namespace WickedQuiz.Models.Repositories
         {
             try
             {
-                var result = await _context.Quizzes.Include(q => q.Questions).ThenInclude(q => q.Answers).ToListAsync<Quiz>();
+                var result = await _context.Quizzes.Include(a => a.ApplicationUser).Include(q => q.Questions).ThenInclude(q => q.Answers).ToListAsync<Quiz>();
                 return result;
             }
             catch (Exception ex)

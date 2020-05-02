@@ -10,27 +10,30 @@ namespace WickedQuiz.API.ApiModels
     {
         public static Quiz_DTO ConvertTo_DTO(Quiz quiz, ref Quiz_DTO quiz_DTO)
         {
-            quiz_DTO.Difficulty = quiz.Difficulty.ToString();
             quiz_DTO.Name = quiz.Name;
             quiz_DTO.Description = quiz.Description;
-            List<List<string>> questions = new List<List<string>>();
+            quiz_DTO.Difficulty = quiz.Difficulty.ToString();
+            quiz_DTO.CreatorName = quiz.ApplicationUser.UserName;
+            List<string> questions = new List<string>();
             foreach (var item in quiz.Questions)
             {
-                List<string> question = new List<string>();
-                question.Add(item.QuestionName);
+                questions.Add(item.QuestionName);
                 List<string> answers = new List<string>();
-                foreach (var itemAnswer in item.Answers)
+                foreach (var answer in item.Answers)
                 {
-                    List<string> answer = new List<string>();
-                    answer.Add(itemAnswer.AnswerName);
-                    if (itemAnswer.Correct == Answer.State.correct)
+                    answers.Add(answer.AnswerName);
+                    if (answer.Correct == Answer.State.correct)
                     {
-                        answer.Add("correct");
+                        answers.Add("correct");
                     }
-                    // answers.Add(answer);
+                    else
+                    {
+                        answers.Add("incorrect");
+                    }
                 }
-
+                questions.AddRange(answers);
             }
+            quiz_DTO.Questions = questions;
             return quiz_DTO;
         }
     }

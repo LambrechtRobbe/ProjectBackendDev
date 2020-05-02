@@ -12,6 +12,9 @@
         <p>De eerste quiz moet nog worden aangemaakt.</p>
         @Html.ActionLink("Play quiz", "StartQuiz", new { quizid = ViewBag.quizid })
     </div>
+    <div>
+        <a asp-action="Quizzes">Back to quizzes</a>
+    </div>
 }
 else
 {
@@ -28,5 +31,8 @@ else
             <label class="control-label">@Model[i].ApplicationUser.UserName</label>
         </div>
     }
+    <div>
+        <a asp-action="Quizzes">Back to quizzes</a>
+    </div>
 }
 
