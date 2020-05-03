@@ -8,6 +8,6 @@ namespace WickedQuiz.Models.Repositories
     public interface IScoreRepository
     {
         Task<Score> AddScoreAsync(Score score);
-        Task<IList<Score>> GetAllScoresForQuizzesAsync(Guid quizid);
+        Task<IList<Score>> GetAllScoresForQuizzesAsync(string quizid);
     }
 }

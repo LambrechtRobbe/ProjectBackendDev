@@ -58,7 +58,7 @@ namespace WickedQuiz.Web.Controllers
         [Authorize(Roles = "Administrator, User")]
         public async Task<ActionResult> ScoresQuizAsync(string quizid)
         {
-            var result = await _scoreRepository.GetAllScoresForQuizzesAsync(Guid.Parse(quizid));
+            var result = await _scoreRepository.GetAllScoresForQuizzesAsync(quizid);
             ViewBag.quizid = quizid;
             return View(result);
         }

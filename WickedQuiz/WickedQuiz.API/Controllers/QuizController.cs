@@ -66,7 +66,7 @@ namespace WickedQuiz.API.Controllers
             try
             {
                 ScoreTable_DTO scoreTable_DTO = new ScoreTable_DTO();
-                var scores = await _scoreRepository.GetAllScoresForQuizzesAsync(Guid.Parse(quizid));
+                var scores = await _scoreRepository.GetAllScoresForQuizzesAsync(quizid);
                 List<ScoreTable_DTO> scoreTable_DTOs = new List<ScoreTable_DTO>();
                 foreach (var obj in scores)
                 {
