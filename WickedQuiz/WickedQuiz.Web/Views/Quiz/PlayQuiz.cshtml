@@ -21,13 +21,13 @@
             <h2>@Model.Question.QuestionName</h2>
         </div>
         <div class="QImage">
-            <img src="~/images/@(Model.Question.Id.ToString() + ".jpg")" />
+            <img src="~/images/@(Model.Question.Id.ToString() + ".jpg")" style="width: 65%;" />
         </div>
         <div class="QAnswers">
             @for (int i = 0; i < Model.Answers.Count(); i++)
             {
                 <div class="form-group">
-                    <label class="control-label"> @Html.ActionLink(Model.Answers[i].AnswerName, "NextQuestion", new { QId = Model.QId, QName = Model.QName, QIndex = Model.QIndex, Correct = Model.Answers[i].Correct, Score = ViewBag.Score, @class = "btn btn-primary btn-large" })</label>
+                    @Html.ActionLink(Model.Answers[i].AnswerName, "NextQuestion", new { QId = Model.QId, QName = Model.QName, QIndex = Model.QIndex, Correct = Model.Answers[i].Correct, Score = ViewBag.Score }, new { @class = "btn btn-primary btn-large"  })
                 </div>
             }
         </div>

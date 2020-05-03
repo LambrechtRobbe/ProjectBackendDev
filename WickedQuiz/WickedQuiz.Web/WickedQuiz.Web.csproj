@@ -22,8 +22,4 @@
     <ProjectReference Include="..\WickedQuiz.Models\WickedQuiz.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
-  </ItemGroup>
-
 </Project>
