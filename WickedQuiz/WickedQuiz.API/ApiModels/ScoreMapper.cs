@@ -11,7 +11,7 @@ namespace WickedQuiz.API.ApiModels
         public static ScoreTable_DTO ConvertTo_DTO(Score score, ref ScoreTable_DTO score_DTO)
         {
             score_DTO.QuizName = (score_DTO.QuizName is null) ? "" :  score.Quiz.Name;
-            score_DTO.ApplicationUser = (score_DTO.ApplicationUser is null) ? "" : score.ApplicationUser.UserName;
+            score_DTO.ApplicationUser = (score.ApplicationUser is null) ? "" : score.ApplicationUser.UserName;
             score_DTO.FinalScore = score.FinalScore;
             score_DTO.MaxScore = score.MaxScore;
             score_DTO.Datefinished = score.DateFinished;

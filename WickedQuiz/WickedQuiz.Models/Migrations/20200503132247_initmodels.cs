@@ -97,8 +97,8 @@ namespace WickedQuiz.Models.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: false)
                 },
@@ -142,8 +142,8 @@ namespace WickedQuiz.Models.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(nullable: false),
-                    LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
-                    Name = table.Column<string>(maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -203,21 +203,22 @@ namespace WickedQuiz.Models.Migrations
                 name: "Scores",
                 columns: table => new
                 {
-                    ApplicationUserId = table.Column<string>(nullable: false),
-                    QuizId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     FinalScore = table.Column<int>(nullable: false),
                     MaxScore = table.Column<int>(nullable: false),
-                    DateFinished = table.Column<DateTime>(nullable: false)
+                    DateFinished = table.Column<DateTime>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    QuizId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Scores", x => new { x.ApplicationUserId, x.QuizId });
+                    table.PrimaryKey("PK_Scores", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Scores_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Scores_Quizzes_QuizId",
                         column: x => x.QuizId,
@@ -232,7 +233,7 @@ namespace WickedQuiz.Models.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     AnswerName = table.Column<string>(maxLength: 50, nullable: false),
-                    Correct = table.Column<int>(nullable: true),
+                    Correct = table.Column<int>(nullable: false),
                     QuestionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
@@ -298,6 +299,11 @@ namespace WickedQuiz.Models.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Quizzes_ApplicationUserId",
                 table: "Quizzes",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Scores_ApplicationUserId",
+                table: "Scores",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(

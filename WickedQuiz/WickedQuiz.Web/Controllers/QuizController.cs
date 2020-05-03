@@ -146,26 +146,26 @@ namespace WickedQuiz.Web.Controllers
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateQuizAsync(Quiz quizze)
+        public ActionResult CreateQuiz(Quiz quiz)
         {
             try
             {
-                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-                quizze.ApplicationUserId = userId.ToString();
-                await _quizRepository.AddQuizAsync(quizze);
                 IList<Question> questions = new List<Question>();
-                for (var i = 0; i < quizze.QuestionCount; i++)
+                for (var i = 0; i < quiz.QuestionCount; i++)
                 {
                     List<Answer> answers = new List<Answer>();
                     for (var j = 0; j < 4; j++)
                     {
-                        Answer answer = new Answer() {};
+                        Answer answer = new Answer() { };
                         answers.Add(answer);
                     }
-                    Question question1 = new Question() { Answers = answers, Quiz = quizze };
+                    Question question1 = new Question() { Answers = answers, Quiz = quiz };
                     questions.Add(question1);
                 }
-                ViewBag.QuizId = quizze.Id;
+                ViewBag.QuizId = quiz.Id;
+                ViewBag.QuizName = quiz.Name;
+                ViewBag.QuizDescript = quiz.Description;
+                ViewBag.QuizDiff = quiz.Difficulty;
                 return View("AddQuestionToQuiz", questions);
             }
             catch (Exception ex)
@@ -179,15 +179,19 @@ namespace WickedQuiz.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Obsolete]
-        public async Task<ActionResult> AddQuestionToQuiz(IList<Question> questions, List<IFormFile> questionimg, List<string> listimgindex)
+        public async Task<ActionResult> AddQuestionToQuiz(IList<Question> questions, List<IFormFile> questionimg, List<string> listimgindex, string quizname, string quizdiff, string quizdescript)
         {
             try
             {
+                var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 var uploadPath = Path.Combine(_he.WebRootPath, "images");
                 int imgCounter = 0;
                 int isaindex = 0;
+                Quiz quiz = new Quiz() { Name = quizname, Description = quizdescript, Difficulty = (Quiz.Difficulties)Enum.Parse(typeof(Quiz.Difficulties), quizdiff), QuestionCount = questions.Count(), ApplicationUserId = userId };
+                await _quizRepository.AddQuizAsync(quiz);
                 foreach (var question in questions)
                 {
+                    question.Quiz = quiz;
                     await _questionRepository.AddQuestionAsync(question);
                     Guid QuestionGuid = question.Id;
                     if (Int16.Parse(listimgindex[isaindex]) == 1)
@@ -204,8 +208,8 @@ namespace WickedQuiz.Web.Controllers
                     }
                     isaindex++;
                 }
-                var quizzes = await _quizRepository.GetAllQuizzesAsync();
-                return View("MyQuizzes", quizzes);
+                var result = await _quizRepository.GetAllQuizzesAsync();
+                return View("Quizzes", result);
             }
             catch (Exception ex)
             {

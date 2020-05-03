@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using WickedQuiz.Models.Models;
 using WickedQuiz.Models.Repositories;
 using WickedQuiz.Web.Data;
@@ -43,8 +44,10 @@ namespace WickedQuiz.API
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<WickedQuizDbContext>();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Quiz_API", Version = "v1.0" });});
             services.AddDbContext<WickedQuizDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddMvc(options =>{options.EnableEndpointRouting = false;options.RespectBrowserAcceptHeader = true; options.Filters.Add(new ConsumesAttribute("application/json"));}).AddNewtonsoftJson(options =>
+            services.AddMvc(options =>{options.EnableEndpointRouting = false;options.RespectBrowserAcceptHeader = true; options.ReturnHttpNotAcceptable = true;}).AddNewtonsoftJson(options => // options.Filters.Add(new ConsumesAttribute("application/json"));
             {
+                //camelcase de kolom namen
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); 
                 //circulaire referenties verhinderen door navigatie props
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
@@ -57,8 +60,7 @@ namespace WickedQuiz.API
                      {
                          OnRedirectToLogin = (ctx) =>
                          {
-                             if (ctx.Request.Path.StartsWithSegments("/api") &&
-                        ctx.Response.StatusCode == 200) //redirect naar loginURL is 200
+                             if (ctx.Request.Path.StartsWithSegments("/api") &&ctx.Response.StatusCode == 200) //redirect naar loginURL is 200
                              {
                                  //doe geen redirect naar een loginpagina bij een api call 
                                  //maar geef een 401 (unauthorized) als authenticatie faalt 
@@ -104,6 +106,8 @@ namespace WickedQuiz.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(cfg => { cfg.AllowAnyHeader().AllowAnyMethod(); });
 
             app.UseAuthentication();
             app.UseAuthorization();

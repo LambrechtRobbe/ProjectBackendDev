@@ -23,6 +23,6 @@ namespace WickedQuiz.API.ApiModels
         [Display(Name = "CreatorName")]
         public string CreatorName { get; set; }
 
-        public List<string> Questions { get; set; } = new List<string>();
+        public List<Question_DTO> Questions { get; set; } = new List<Question_DTO>();
     }
 }

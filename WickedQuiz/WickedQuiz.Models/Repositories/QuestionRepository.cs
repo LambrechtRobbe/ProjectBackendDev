@@ -24,7 +24,6 @@ namespace WickedQuiz.Models.Repositories
             try
             {
                 var result = await _context.Questions.Include(a => a.Answers).Where(q => q.QuizId == quizid).ToListAsync<Question>();
-                //var result = await _context.Questions.Where(n => n.QuizId == Guid.Parse(quizid)).ToListAsync<Question>();
                 return result;
             }
             catch (Exception ex)

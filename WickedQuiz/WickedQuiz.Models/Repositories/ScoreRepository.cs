@@ -23,7 +23,7 @@ namespace WickedQuiz.Models.Repositories
         {
             try
             {
-                var fdsfdsfs = await _context.Scores.Include(q => q.Quiz).ThenInclude(a => a.ApplicationUser).Where(n => n.QuizId == Guid.Parse(quizid)).OrderBy(s => s.FinalScore).ToListAsync();
+                var fdsfdsfs = await _context.Scores.Include(q => q.Quiz).ThenInclude(a => a.ApplicationUser).Where(n => n.QuizId == Guid.Parse(quizid)).OrderByDescending(s => s.FinalScore).ToListAsync();
                 var result = await _context.Scores.Include(e => e.Quiz).ThenInclude(e => e.ApplicationUser)
                            .GroupBy(e => new { e.QuizId, e.ApplicationUserId, e.MaxScore })
                            .Select(e => new { Score = e.Max(x => x.FinalScore), User = e.Key.ApplicationUserId, maxScore = e.Key.MaxScore, quiz = e.Key.QuizId }).Where(e => e.User == quizid)
@@ -36,8 +36,7 @@ namespace WickedQuiz.Models.Repositories
                         QuizId = obj.Value.quiz
                     };
                 }
-
-                return fdsfdsfs;
+                 return fdsfdsfs;
             }
             catch (Exception ex)
             {

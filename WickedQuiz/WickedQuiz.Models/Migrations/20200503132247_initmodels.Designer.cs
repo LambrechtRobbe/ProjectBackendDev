@@ -10,7 +10,7 @@ using WickedQuiz.Web.Data;
 namespace WickedQuiz.Models.Migrations
 {
     [DbContext(typeof(WickedQuizDbContext))]
-    [Migration("20200430075707_initmodels")]
+    [Migration("20200503132247_initmodels")]
     partial class initmodels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -99,12 +99,10 @@ namespace WickedQuiz.Models.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -141,12 +139,10 @@ namespace WickedQuiz.Models.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(128)")
-                        .HasMaxLength(128);
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -167,7 +163,7 @@ namespace WickedQuiz.Models.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<int?>("Correct")
+                    b.Property<int>("Correct")
                         .HasColumnType("int");
 
                     b.Property<Guid>("QuestionId")
@@ -321,11 +317,12 @@ namespace WickedQuiz.Models.Migrations
 
             modelBuilder.Entity("WickedQuiz.Models.Models.Score", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<Guid>("QuizId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateFinished")
                         .HasColumnType("datetime2");
@@ -336,7 +333,12 @@ namespace WickedQuiz.Models.Migrations
                     b.Property<int>("MaxScore")
                         .HasColumnType("int");
 
-                    b.HasKey("ApplicationUserId", "QuizId");
+                    b.Property<Guid>("QuizId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("QuizId");
 
@@ -423,9 +425,7 @@ namespace WickedQuiz.Models.Migrations
                 {
                     b.HasOne("WickedQuiz.Models.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("WickedQuiz.Models.Models.Quiz", "Quiz")
                         .WithMany("ScoreTables")

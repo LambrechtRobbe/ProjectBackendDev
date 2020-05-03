@@ -9,22 +9,22 @@
     <input asp-for="@Model.Id" value="@Guid.NewGuid()" style="display:none;" hidden />
     <div class="form-group">
         <label asp-for="@Model.Name">Quiz name</label>
-        <input asp-for="@Model.Name" type="text" class="form-control" placeholder="Enter quizname">
+        <input asp-for="@Model.Name" type="text" class="form-control" placeholder="Enter quizname" required>
         <span asp-validation-for="@Model.Name" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="@Model.Description">Quiz description</label>
-        <input asp-for="@Model.Description" type="text" class="form-control" placeholder="Enter quizdiscription">
+        <input asp-for="@Model.Description" type="text" class="form-control" placeholder="Enter quizdiscription" required>
         <span asp-validation-for="@Model.Description" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="@Model.QuestionCount">Total questions</label>
-        <input asp-for="@Model.QuestionCount" type="number" class="form-control" placeholder="Enter quizname" min="1" max="10">
+        <input asp-for="@Model.QuestionCount" type="number" class="form-control" placeholder="Enter number of questions" min="1" max="10" required>
         <span asp-validation-for="@Model.QuestionCount" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="@Model.Difficulty" class="control-label">How difficult is this quiz?</label>
-        <select asp-for="@Model.Difficulty" asp-items="Html.GetEnumSelectList<Quiz.Difficulties>()">
+        <select asp-for="@Model.Difficulty" asp-items="Html.GetEnumSelectList<Quiz.Difficulties>()" required>
             <option value="" disabled selected hidden>-- Difficulty --</option>
         </select>
         <span asp-validation-for="@Model.Difficulty" class="text-danger"></span>
