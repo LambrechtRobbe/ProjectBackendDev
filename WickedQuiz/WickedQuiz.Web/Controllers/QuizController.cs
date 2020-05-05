@@ -22,21 +22,21 @@ namespace WickedQuiz.Web.Controllers
         [Obsolete]
         private readonly IHostingEnvironment _he;
         private readonly IQuizRepository _quizRepository;
+        private readonly IScoreRepository _scoreRepository;
         private readonly IAnswerRepository _answerRepository;
         private readonly IQuestionRepository _questionRepository;
-        private readonly IScoreRepository _scoreRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         [Obsolete]
         public QuizController(IQuizRepository quizRepository, IAnswerRepository answerRepository, IQuestionRepository questionRepository, IScoreRepository scoreRepository, UserManager<ApplicationUser> userManager, IHostingEnvironment e, IHttpContextAccessor httpContextAccessor)
         {
+            _he = e;
+            _userManager = userManager;
             _quizRepository = quizRepository;
+            _scoreRepository = scoreRepository;
             _answerRepository = answerRepository;
             _questionRepository = questionRepository;
-            _scoreRepository = scoreRepository;
-            _userManager = userManager;
-            _he = e;
             _httpContextAccessor = httpContextAccessor;
         }
         // GET: Quiz
@@ -51,7 +51,7 @@ namespace WickedQuiz.Web.Controllers
         public async Task<ActionResult> MyQuizzesAsync()
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var result = await _quizRepository.GetQuizzesForUserAsync(userId.ToString());
+            var result = await _quizRepository.GetQuizzesForUserAsync(userId);
             return View(result);
         }
 
@@ -83,15 +83,13 @@ namespace WickedQuiz.Web.Controllers
             {
                 Quiz quiz = await _quizRepository.GetQuizForQuizIdAsync(Guid.Parse(quizid));
                 ScoreUser_VM scoreUser_VM = new ScoreUser_VM() { QName = quiz.Name, QId = quiz.Id };
+                var questions = await _questionRepository.GetQuestionsForQuizAsync(scoreUser_VM.QId);
+                var question = questions[scoreUser_VM.QIndex];
 
-                var qstnList = await _questionRepository.GetQuestionsForQuizAsync(scoreUser_VM.QId);
-                var qstnSelf = qstnList.ToList()[scoreUser_VM.QIndex];
+                var answers = await _answerRepository.GetAnswersForQuestionAsync(question.Id.ToString());
 
-                var ansListIe = await _answerRepository.GetAnswersForQuestionAsync(qstnSelf.Id.ToString());
-                var ansList = ansListIe.ToList();
-
-                scoreUser_VM.Question = qstnSelf;
-                scoreUser_VM.Answers = ansList;
+                scoreUser_VM.Question = question;
+                scoreUser_VM.Answers = answers;
                 ViewBag.Score = 0;
                 return View("PlayQuiz", scoreUser_VM);
             }
@@ -108,16 +106,16 @@ namespace WickedQuiz.Web.Controllers
             try
             {
                 ScoreUser_VM score1 = new ScoreUser_VM() { QName = QName, QId = QId, QIndex = QIndex };
-                var qstnList = await _questionRepository.GetQuestionsForQuizAsync(score1.QId);
+                var questions = await _questionRepository.GetQuestionsForQuizAsync(score1.QId);
                 score1.QIndex++;
                 if (Correct == "correct"){ Score += 1; }
-                if (score1.QIndex >= qstnList.Count())
+                if (score1.QIndex >= questions.Count())
                 {
                     Score newscore = new Score()
                     {
                         ApplicationUserId = _userManager.GetUserId(User),
                         QuizId = score1.QId,
-                        MaxScore = qstnList.Count(),
+                        MaxScore = questions.Count(),
                         FinalScore = Score
                     };
                     await _scoreRepository.AddScoreAsync(newscore);
@@ -125,7 +123,7 @@ namespace WickedQuiz.Web.Controllers
                 }
                 else
                 {
-                    var objquestion = qstnList[score1.QIndex];
+                    var objquestion = questions[score1.QIndex];
                     IList<Answer> answers = await _answerRepository.GetAnswersForQuestionAsync(objquestion.Id.ToString());
                     score1.Question = objquestion;
                     score1.Answers = answers;
@@ -193,12 +191,11 @@ namespace WickedQuiz.Web.Controllers
                 {
                     question.Quiz = quiz;
                     await _questionRepository.AddQuestionAsync(question);
-                    Guid QuestionGuid = question.Id;
                     if (Int16.Parse(listimgindex[isaindex]) == 1)
                     {
                         if (questionimg[imgCounter].Length > 0)
                         {
-                            var filePath = Path.Combine(uploadPath, QuestionGuid + ".jpg");
+                            var filePath = Path.Combine(uploadPath, question.Id + ".jpg");
                             using (var fileStream = new FileStream(filePath, FileMode.Create))
                             {
                                 await questionimg[imgCounter].CopyToAsync(fileStream);
